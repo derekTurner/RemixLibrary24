@@ -1,0 +1,84 @@
+//import {redirect } from "@remix-run/node";
+
+import {
+  Links,
+  Meta,
+  NavLink,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+} from "@remix-run/react";
+
+import type { MetaFunction } from "@remix-run/node";
+// existing imports
+
+import "./app.css"; // includes bootstrap
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: "Local Library" },
+    {
+      property: "og:title",
+      content: "Very cool app",
+    },
+    {
+      name: "description",
+      content: "Acess local library",
+    },
+  ];
+};
+
+
+export default function App() {
+
+const retrieve = [
+  ['/','home'],
+  ['/catalog/','Catalog'],
+  ['/catalog/books/','All books'],
+  ['/catalog/authors/','All authors'],
+  ['/catalog/genres/','All genres'],
+  ['/catalog/instances/','All book-instances'],
+
+]
+  return (
+    <html lang="en">
+      <head>
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        {/* comments in JSX are in braces  */}
+        <div id="sidebar">
+          <h1>Local Library</h1>
+          <ul>
+          <nav>
+          {retrieve.map((retriever) => (
+                  <li key={retriever[1]}>
+            <NavLink
+              className={({ isActive, isPending }) =>
+                isActive
+                  ? "active"
+                  : isPending
+                    ? "pending"
+                    : ""
+              }
+              to= {retriever[0]}
+            >
+              {retriever[1]}
+            </NavLink>
+            </li>
+            ))}
+          </nav>
+          </ul>
+        </div>
+
+
+        <div>
+          <Outlet />
+        </div>
+        <ScrollRestoration />
+        <Scripts />
+      </body>
+    </html>
+  );
+}
