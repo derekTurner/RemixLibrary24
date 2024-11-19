@@ -11,7 +11,7 @@ const db = async () => {
         await mongoose.connect(connectionString!, {
             autoIndex: true
         })
-        console.log('Connected to Mongodb Atlas');} catch (error) {
+        console.log('Connected to Mongodb Database');} catch (error) {
         console.error(error);
     }
 }
