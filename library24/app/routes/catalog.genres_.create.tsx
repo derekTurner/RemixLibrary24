@@ -70,11 +70,8 @@ const GenresForm = () => {
 }
 
 
-export default function NewAuthor() {
+export default function NewGenre() {
     return (
         <GenresForm />
     );
 }
-
-
-

@@ -82,7 +82,3 @@ export default function NewAuthor() {
         <AuthorsForm />
     );
 }
-
-
-
-

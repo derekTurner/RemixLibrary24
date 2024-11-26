@@ -43,6 +43,13 @@ export default function App() {
 
   ]
 
+  const create = [
+    ['/catalog/books/create', 'Create book'],
+    ['/catalog/authors/create', 'Create author'],
+    ['/catalog/genres/create', 'Create genre'],
+    ['/catalog/instances/create', 'Create book-instance']
+  ]
+
   return (
     <html lang="en">
       <head>
@@ -60,6 +67,30 @@ export default function App() {
                   <ul>
                     <nav>
                       {retrieve.map((retriever) => (
+                        <li key={retriever[1]}>
+                          <NavLink
+                            className={({ isActive, isPending }) =>
+                              isActive
+                                ? "active" : isPending
+                                  ? "pending" : ""
+                            }
+                            to={retriever[0]}
+                          >
+                            {retriever[1]}
+                          </NavLink>
+                        </li>
+                      ))}
+                    </nav>
+                  </ul>
+                </Card.Body>
+              </Card>
+
+              <h2>Create</h2>
+              <Card className="text-left" border="primary">
+                <Card.Body>
+                  <ul>
+                    <nav>
+                      {create.map((retriever) => (
                         <li key={retriever[1]}>
                           <NavLink
                             className={({ isActive, isPending }) =>
