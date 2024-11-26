@@ -1,9 +1,4 @@
-//import type { ActionFunctionArgs } from "@remix-run/node";//
-//import type { FunctionComponent } from "react";
-
-
 import type { LoaderFunctionArgs } from "@remix-run/node";
-import {Form} from "@remix-run/react";
 import invariant from "tiny-invariant";
 
 import Card from 'react-bootstrap/Card';
@@ -101,7 +96,3 @@ export default function Catalog() {
 
   );
 }
-
-
-
-
