@@ -1,4 +1,9 @@
+//import type { ActionFunctionArgs } from "@remix-run/node";//
+//import type { FunctionComponent } from "react";
+
+
 import type { LoaderFunctionArgs } from "@remix-run/node";
+import { Form } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
 import Card from 'react-bootstrap/Card';
@@ -11,6 +16,9 @@ import { useLoaderData, Link } from "@remix-run/react";
 import Book, { IBook } from '../models/book';
 import BookInstance, { IBookInstance } from '../models/bookinstance';
 
+const newInstance = ['/catalog/instancecreate/', 'Create book-instance'];
+const deleteInstance = ['/catalog/instancedelete/', 'Delete this book instance'];
+const updateBook = ['/catalog/bookupdate/', 'Update book'];
 
 export const loader: unknown = async ({
   params,
@@ -74,6 +82,15 @@ export default function Catalog() {
         </Card.Body>
       </Card>
 
+      <h2>Update book</h2>
+
+      <Card style={{ width: '60em' }}>
+        <Card.Body>
+          <Card.Text>
+            <b>Update Book: <Link to={updateBook[0] + book._id}> {updateBook[1]} </Link></b>
+          </Card.Text>
+        </Card.Body>
+      </Card>
 
       <h2>Copies</h2>
       {bookInstances.map((bookInstance) => (
@@ -82,9 +99,10 @@ export default function Catalog() {
             <Card.Text>
               <ListGroup>
                 <ListGroup.Item className="card-text">
-                  <b>Status:</b> {bookInstance.status} <br />
+                  <b>Status:</b> {String(bookInstance.status)} <br />
                   <b>Imprint:</b>{bookInstance.imprint}<br />
-                  <b>Detail:</b>Detail:<Link to={bookInstance.url}>Details</Link>
+                  <b>Detail:</b><Link to={bookInstance.url}>Details</Link><br />
+                  <b>New Instance:<Link to={deleteInstance[0] + bookInstance._id}> {deleteInstance[1]}</Link></b> 
                 </ListGroup.Item>
               </ListGroup>
             </Card.Text>
@@ -92,7 +110,23 @@ export default function Catalog() {
         </Card>
       ))}
 
+      <h2>Add new copy</h2>
+
+      <Card style={{ width: '60em' }}>
+        <Card.Body>
+          <Card.Text>
+            <b>New Instance:<Link to={newInstance[0] + book._id}> {newInstance[1]}</Link></b>
+          </Card.Text>
+        </Card.Body>
+      </Card>
+
+
+
     </div>
 
   );
 }
+
+
+
+

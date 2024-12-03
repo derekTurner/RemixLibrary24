@@ -1,3 +1,7 @@
+//import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";//
+//import type { FunctionComponent } from "react";
+
+
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import invariant from "tiny-invariant";
 
@@ -37,7 +41,7 @@ export default function Catalog() {
           <Card.Text>
                   Book: {instance.book} <br/>
                   Imprint:{instance.imprint}<br/>
-                  Status:{instance.status}<br/> 
+                  Status:{String(instance.status)}<br/> 
                   Due back:{instance.due_back_formatted}<br/>
           </Card.Text>
         </Card.Body>
@@ -47,4 +51,3 @@ export default function Catalog() {
 
   );
 }
-

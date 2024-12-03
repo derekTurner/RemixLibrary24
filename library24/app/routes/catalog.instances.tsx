@@ -29,17 +29,17 @@ export default function Catalog() {
   //console.log(data);
   return (
     <div>
-      <center><h1>Book List</h1></center>
+      <center><h1>Book Instance List</h1></center>
       <p>The library has the following books:</p>
       <Card style={{ width: '60em' }}>
         <Card.Body>
           <Card.Text>
             <ListGroup>
               {data.instances.map((instance) => (
-                <ListGroup.Item className="card-text" key={instance._id} >
-                  Book: {instance.book} <br/>
-                  Imprint:{instance.imprint}<br/>
-                  Status:{instance.status}<br/> 
+                <ListGroup.Item className="card-text" key={instance._id}>
+                  Book: {instance.book.toString()} <br/>
+                  Imprint: {instance.imprint}<br/>
+                  Status: {instance.status.toString()}<br/> 
                 </ListGroup.Item>
               ))}
             </ListGroup>

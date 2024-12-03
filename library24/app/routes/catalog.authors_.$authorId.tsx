@@ -1,3 +1,7 @@
+//import type { ActionFunctionArgs } from "@remix-run/node";//
+//import type { FunctionComponent } from "react";
+
+
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import invariant from "tiny-invariant";
 
@@ -69,3 +73,7 @@ export default function Catalog() {
 
   );
 }
+
+
+
+

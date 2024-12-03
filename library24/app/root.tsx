@@ -46,10 +46,8 @@ export default function App() {
   const create = [
     ['/catalog/books/create', 'Create book'],
     ['/catalog/authors/create', 'Create author'],
-    ['/catalog/genres/create', 'Create genre'],
-    ['/catalog/instances/create', 'Create book-instance']
+    ['/catalog/genres/create', 'Create genre']
   ]
-
   return (
     <html lang="en">
       <head>
@@ -84,9 +82,9 @@ export default function App() {
                   </ul>
                 </Card.Body>
               </Card>
-
-              <h2>Create</h2>
-              <Card className="text-left" border="primary">
+          
+            <h2>Create</h2>          
+            <Card className="text-left" border="primary">
                 <Card.Body>
                   <ul>
                     <nav>

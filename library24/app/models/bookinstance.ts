@@ -6,7 +6,7 @@ export interface IBookInstance{
   _id: string;
   book:string,
   imprint:string,
-  status:string,
+  status:{'Available':string, 'Maintenance':string, 'Loaned':string, 'Reserved':string},
   due_back: Date,
   due_back_formatted: string,
   url: string

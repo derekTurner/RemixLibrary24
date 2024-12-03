@@ -1,0 +1,2 @@
+DB_STRING=mongodb://host.docker.internal:27017/local_library
+DB_STRING=mongodb+srv://derekturner:wkpNrjWnXwc8DoT4@paisley1.psewuad.mongodb.net/local_library?retryWrites=true&w=majority&appName=Paisley1

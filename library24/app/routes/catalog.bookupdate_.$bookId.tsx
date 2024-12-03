@@ -1,21 +1,35 @@
 //https://www.remix-validated-form.io/repeated-field-names
 //https://www.npmjs.com/package/zod-form-data/v/1.2.0
 
+import type { LoaderFunctionArgs } from "@remix-run/node";
 import { FormInput, SelectInput, FormSubmit } from '../components/formUI';
 import { withZod } from "@rvf/zod";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
 import { useForm, validationError, } from "@rvf/remix";
+import invariant from "tiny-invariant";
 import type { ActionFunctionArgs, } from "@remix-run/node";//
 import { redirect, json } from "@remix-run/node";
+import Book, { IBook } from '../models/book';
 import Author, { IAuthor } from '../models/author';
 import Genre, { IGenre } from '../models/genre';
-import Book from '../models/book';
 import { Container } from 'react-bootstrap';
 import { useLoaderData } from "@remix-run/react";
 
 
-export const loader: unknown = async () => {
+export const loader: unknown = async ({
+    params,
+  }: LoaderFunctionArgs) => {
+    invariant(params.bookId, "Missing contactId param");
+    //console.log(params.bookId);
+    const [bookData] = await Promise.all([
+      Book.findById(params.bookId).populate('authors').populate('genres').exec(),
+     // BookInstance.find({ book: params.bookId }).exec()
+    ]);
+  
+    if (!bookData) {
+      throw new Response("Not Found", { status: 404 });
+    }
 
     const authors = await Author.find({}, null, { virtuals: true })
         .sort([['family_name', 'ascending']])
@@ -33,12 +47,13 @@ export const loader: unknown = async () => {
         throw new Response("Not Found", { status: 404 });
     }
 
-    return json({ authors, genres });
-};
+    return json({ book: bookData , authors, genres});
+  };
+  
 
 export const validator = withZod(
     z.object({
-        title: z.string().min(1, { message: "Title is required" }).max(40).trim(),
+        title: z.string().min(1, { message: "Title is required" }).max(80).trim(),
         authors: zfd.repeatable(z.array(zfd.text()).min(1, { message: "Author selection is required" })),
         summary: z.string().min(1, { message: "Summary is required" }).max(1000).trim(),
         isbn: z.string().min(1, { message: "ISBN is required" }).max(13).trim(),
@@ -48,14 +63,18 @@ export const validator = withZod(
 
 
 async function createBook(formData: FormData) {
-    const newBook = new Book({
+    const filter = { _id: formData.get('_id') };
+    const update = { 
         title: formData.get('title'),
         authors: formData.getAll('authors'),
         summary: formData.get('summary'),
         isbn: formData.get('isbn'),
         genres: formData.getAll('genres'),
-    });
-    await newBook.save();
+    };
+
+    await Book.findOneAndUpdate(filter, update, {
+        new: true
+      });
     return;
 }
 
@@ -75,22 +94,23 @@ export const action = async ({
     if (result.error) return validationError(result.error, result.submittedData);
 
     await createBook(formData);
-    return redirect('/catalog/books');
+    return redirect('/catalog/books/' + formData.get('_id'));
 
 };
 
 const BooksForm = () => {
-    const data = useLoaderData() as { authors: IAuthor[], genres: IGenre[] };
+    const data = useLoaderData() as { book: IBook, authors: IAuthor[], genres: IGenre[]};
     const form = useForm({ validator, method: "post" });
     return (
         <form {...form.getFormProps()} >
 
             <h1>Enter new book details</h1>
             <Container>
-                <FormInput   name="title"   label="Book Title" form={form} />
+                <input type="hidden" name="_id" value={data.book._id} />
+                <FormInput   name="title"   label="Book Title" form={form} defaultValue={data.book.title} />
                 <SelectInput name="authors" label="Authors"    form={form} data={data.authors} /> 
-                <FormInput   name="summary" label="Summary"    form={form} />
-                <FormInput   name="isbn"    label="ISBN"       form={form} />
+                <FormInput   name="summary" label="Summary"    form={form} defaultValue={data.book.summary}/>
+                <FormInput   name="isbn"    label="ISBN"       form={form} defaultValue={data.book.isbn}/>
                 <SelectInput name="genres"  label="Genres"     form={form} data={data.genres} />
                 <FormSubmit form={form} />
             </Container>
